@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Getting Started | sqlbunny</title>
+    <meta name="description" content="Go codegen ORM">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.7710add6.css" as="style"><link rel="preload" href="/assets/js/app.13a946ed.js" as="script"><link rel="preload" href="/assets/js/2.a0887a64.js" as="script"><link rel="preload" href="/assets/js/6.b9f6ff9b.js" as="script"><link rel="prefetch" href="/assets/js/10.15655284.js"><link rel="prefetch" href="/assets/js/11.07e4879e.js"><link rel="prefetch" href="/assets/js/12.e3cb10be.js"><link rel="prefetch" href="/assets/js/13.56898f70.js"><link rel="prefetch" href="/assets/js/14.b6d8e70a.js"><link rel="prefetch" href="/assets/js/15.8543afd8.js"><link rel="prefetch" href="/assets/js/16.b2498f95.js"><link rel="prefetch" href="/assets/js/17.26a2cca2.js"><link rel="prefetch" href="/assets/js/18.14f06e9b.js"><link rel="prefetch" href="/assets/js/19.207ae34a.js"><link rel="prefetch" href="/assets/js/3.c3caf33f.js"><link rel="prefetch" href="/assets/js/4.72e890b8.js"><link rel="prefetch" href="/assets/js/5.3424fb92.js"><link rel="prefetch" href="/assets/js/7.2acfa9a7.js"><link rel="prefetch" href="/assets/js/8.44ad3fdf.js"><link rel="prefetch" href="/assets/js/9.296e7184.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.7710add6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">sqlbunny</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <ul class="sidebar-links"><li><a href="/" class="sidebar-link">SQLBunny</a></li><li><a href="/getting-started.html" class="active sidebar-link">Getting Started</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/getting-started.html#installation" class="sidebar-link">Installation</a></li><li class="sidebar-sub-header"><a href="/getting-started.html#project-structure" class="sidebar-link">Project structure</a></li><li class="sidebar-sub-header"><a href="/getting-started.html#defining-models" class="sidebar-link">Defining models</a></li><li class="sidebar-sub-header"><a href="/getting-started.html#generating" class="sidebar-link">Generating</a></li><li class="sidebar-sub-header"><a href="/getting-started.html#creating-the-tables" class="sidebar-link">Creating the tables</a></li><li class="sidebar-sub-header"><a href="/getting-started.html#using-the-generated-models" class="sidebar-link">Using the generated models</a></li></ul></li><li><a href="/types.html" class="sidebar-link">Types</a></li><li><a href="/stdtypes.html" class="sidebar-link">Standard types</a></li><li><a href="/models.html" class="sidebar-link">Models</a></li><li><a href="/query.html" class="sidebar-link">Querying</a></li><li><a href="/query-bind.html" class="sidebar-link">Query binding</a></li><li><a href="/query-logging.html" class="sidebar-link">Query logging</a></li><li><a href="/relationships.html" class="sidebar-link">Relationships</a></li><li><a href="/transactions.html" class="sidebar-link">Transactions</a></li><li><a href="/plugin-migration.html" class="sidebar-link">Migrations</a></li><li><a href="/plugin-bunnyid.html" class="sidebar-link">BunnyID plugin</a></li><li><a href="/plugin-hooks.html" class="sidebar-link">Hooks plugin</a></li><li><a href="/writing-plugins.html" class="sidebar-link">Writing plugins</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="getting-started"><a href="#getting-started" aria-hidden="true" class="header-anchor">#</a> Getting Started</h1> <h2 id="installation"><a href="#installation" aria-hidden="true" class="header-anchor">#</a> Installation</h2> <div class="language- extra-class"><pre class="language-text"><code>go get -u github.com/sqlbunny/sqlbunny
+</code></pre></div><h2 id="project-structure"><a href="#project-structure" aria-hidden="true" class="header-anchor">#</a> Project structure</h2> <p>sqlbunny's code generation is a library, not a command-line tool.</p> <p>The recommended usage is making your own executable binary (ie, a Go <code>main</code> package) that calls the sqlbunny library.</p> <div class="tip custom-block"><p>This binary should be completely separate from your main application binary.</p> <p>Having both functionalities in a single binary might seem simpler, but it's not a good
+idea! You wouldn't be able to use sqlbunny if the application
+code does not compile (due to, for example, not having generated the sqlbunny models yet!).</p></div> <p>An example folder structure looks like this. To run code generation, run the <code>sqlbunny</code> executable. To run your app, run the <code>app</code> executable.</p> <div class="language- extra-class"><pre class="language-text"><code>- cmd/
+    - sqlbunny/      &lt;- Runs sqlbunny, with your own configuration
+        - main.go
+    - app/           &lt;- Runs your application
+        - main.go
+- models/            &lt;- autogenerated models package
+    - book.go        
+    - bunny_*.go
+</code></pre></div><h2 id="defining-models"><a href="#defining-models" aria-hidden="true" class="header-anchor">#</a> Defining models</h2> <p>Put the following code at <code>./cmd/sqlbunny/main.go</code>:</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token punctuation">.</span> <span class="token string">&quot;github.com/sqlbunny/sqlbunny/gen/core&quot;</span>
+	<span class="token string">&quot;github.com/sqlbunny/sqlbunny/gen/migration&quot;</span>
+	<span class="token string">&quot;github.com/sqlbunny/sqlbunny/gen/stdtypes&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token function">Run</span><span class="token punctuation">(</span>
+		<span class="token operator">&amp;</span>stdtypes<span class="token punctuation">.</span>Plugin<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token operator">&amp;</span>migration<span class="token punctuation">.</span>Plugin<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+		<span class="token function">Model</span><span class="token punctuation">(</span><span class="token string">&quot;book&quot;</span><span class="token punctuation">,</span>
+			<span class="token function">Field</span><span class="token punctuation">(</span><span class="token string">&quot;id&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span> PrimaryKey<span class="token punctuation">)</span><span class="token punctuation">,</span>
+			<span class="token function">Field</span><span class="token punctuation">(</span><span class="token string">&quot;created_at&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;time&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+			<span class="token function">Field</span><span class="token punctuation">(</span><span class="token string">&quot;name&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+		<span class="token punctuation">)</span><span class="token punctuation">,</span>
+	<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>The main function calls sqlbunny's <code>Run</code>, which takes a slice of configuration items. Everything is done through config items: enabling plugins, defining types and models...</p> <p>In this case, the first two items enable the <code>stdtypes</code> and <code>migration</code> plugins. <code>stdtypes</code> defines many useful data types, and <code>migration</code> adds support for generating migrations.</p> <p>The last configuration item defines a model named <code>book</code>.</p> <h2 id="generating"><a href="#generating" aria-hidden="true" class="header-anchor">#</a> Generating</h2> <p>To generate the models, run the sqlbunny package:</p> <div class="language- extra-class"><pre class="language-text"><code>go run ./cmd/sqlbunny gen
+</code></pre></div><p>This will generate the <code>models</code> package. Let's take a look at it:</p> <div class="language- extra-class"><pre class="language-text"><code>$ ls models/
+bunny_array_utils.go  book.go  bunny_queries.go  bunny_table_names.go  bunny_types.go
+</code></pre></div><p>sqlbunny has created <code>book.go</code> with our model, along with a few utility files named <code>bunny_*.go</code>. You can check out the <code>Book</code> struct definition:</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">type</span> Book <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	ID        <span class="token builtin">string</span>    <span class="token string">`bunny:&quot;id&quot; json:&quot;id&quot; `</span>
+	CreatedAt time<span class="token punctuation">.</span>Time <span class="token string">`bunny:&quot;created_at&quot; json:&quot;created_at&quot; `</span>
+	Name      <span class="token builtin">string</span>    <span class="token string">`bunny:&quot;name&quot; json:&quot;name&quot; `</span>
+	R         <span class="token operator">*</span>bookR    <span class="token string">`json:&quot;-&quot; toml:&quot;-&quot; yaml:&quot;-&quot;`</span>
+	L         bookL     <span class="token string">`json:&quot;-&quot; toml:&quot;-&quot; yaml:&quot;-&quot;`</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>As you can see, the struct has the 3 fields we defined previously, and two extra <code>R</code> and <code>L</code> fields, used for <a href="TODO">eager loading</a>.</p> <p><code>book.go</code> also contains many functions to query and modify <code>Book</code> objects in the database.</p> <h2 id="creating-the-tables"><a href="#creating-the-tables" aria-hidden="true" class="header-anchor">#</a> Creating the tables</h2> <p>We have the Go code to interact with a database, but we don't have such a database with the correct tables yet. Let's fix that.</p> <p>Run the following:</p> <div class="language- extra-class"><pre class="language-text"><code>go run ./cmd/sqlbunny migration gensql
+</code></pre></div><p>This is a command from the <a href="/plugin-migration.html">migration</a> plugin.</p> <p>This converts your model definitions to a series of SQL statements. Run them in your database to create the <code>book</code> table.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token string">&quot;book&quot;</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;id&quot;</span> <span class="token keyword">text</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token string">''</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;created_at&quot;</span> timestamptz <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;name&quot;</span> <span class="token keyword">text</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token string">''</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token string">&quot;book&quot;</span>
+    <span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> <span class="token string">&quot;book_pkey&quot;</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token string">&quot;id&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="tip custom-block"><p>The SQL generated by <code>gensql</code> is only suitable for creating all the tables in an empty database. If you make changes to your model
+definitions and want to incrementally migrate existing databases, you will have to properly configure the <a href="/plugin-migration.html">migrations</a> plugin.</p> <p>Additionally, sqlbunny doesn't force you to use the <code>migrations</code> plugin. You can use any tool to manage your schema. As long as the table and column names match, everything will work!</p></div> <h2 id="using-the-generated-models"><a href="#using-the-generated-models" aria-hidden="true" class="header-anchor">#</a> Using the generated models</h2> <p>Now that you have a <code>models</code> package, let's do some queries! All the code below goes in <code>./cmd/app/main.go</code>.</p> <p>First, we'll need some imports, and the main function</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;context&quot;</span>
+	<span class="token string">&quot;database/sql&quot;</span>
+	<span class="token string">&quot;log&quot;</span>
+	<span class="token string">&quot;time&quot;</span>
+
+	<span class="token string">&quot;github.com/sqlbunny/sqlbunny/runtime/bunny&quot;</span>
+	<span class="token string">&quot;example.com/sqlbunny_demo/models&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>All ORM functions need a context with an active database. To set the database in a context, wrap the context with <code>bunny.ContextWithDB</code>. The context can also be used to cancel in-progress queries (it's passed through to the SQL driver).</p> <div class="language-go extra-class"><pre class="language-go"><code>db<span class="token punctuation">,</span> err <span class="token operator">:=</span> sql<span class="token punctuation">.</span><span class="token function">Open</span><span class="token punctuation">(</span><span class="token string">&quot;postgres&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;host=localhost port=5432 dbname=postgres user=postgres password=postgres sslmode=disable&quot;</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+	<span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+ctx <span class="token operator">:=</span> context<span class="token punctuation">.</span><span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+ctx <span class="token operator">=</span> bunny<span class="token punctuation">.</span><span class="token function">ContextWithDB</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> db<span class="token punctuation">)</span>
+</code></pre></div><p>Once you have a context, you can start doing ORM operations, such as inserting a book:</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// Insert a new book</span>
+book <span class="token operator">:=</span> <span class="token operator">&amp;</span>models<span class="token punctuation">.</span>Book<span class="token punctuation">{</span>
+    ID<span class="token punctuation">:</span>        <span class="token string">&quot;574389527&quot;</span><span class="token punctuation">,</span>
+    Name<span class="token punctuation">:</span>      <span class="token string">&quot;Harry Potter and the Philosopher's Stone&quot;</span><span class="token punctuation">,</span>
+    CreatedAt<span class="token punctuation">:</span> time<span class="token punctuation">.</span><span class="token function">Now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+err <span class="token operator">=</span> book<span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    <span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>...or fetching all books.</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// Fetch all books</span>
+books<span class="token punctuation">,</span> err <span class="token operator">:=</span> models<span class="token punctuation">.</span><span class="token function">Books</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">All</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+	<span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>You now have a working sqlbunny project. Enjoy!</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/" class="prev router-link-active">
+          SQLBunny
+        </a></span> <span class="next"><a href="/types.html">
+          Types
+        </a>
+        →
+      </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.13a946ed.js" defer></script><script src="/assets/js/2.a0887a64.js" defer></script><script src="/assets/js/6.b9f6ff9b.js" defer></script>
+  </body>
+</html>
